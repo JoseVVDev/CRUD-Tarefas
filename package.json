@@ -1,0 +1,21 @@
+{
+  "name": "crud-tarefas",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoseVVDev/CRUD-Tarefas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoseVVDev/CRUD-Tarefas/issues"
+  },
+  "homepage": "https://github.com/JoseVVDev/CRUD-Tarefas#readme"
+}
