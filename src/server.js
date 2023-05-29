@@ -8,13 +8,15 @@ const server = http.createServer(async (req, res) => {
 
     await json(req, res)
 
-    if (method) {
-        routes.find(route => {
-            route.method === method && route.url === url ? route.handler(req, res) : {}
-        }) 
-    } else {
-        return res.writeHead(404).end('não encontrado')
+    const route = routes.find(route => {
+        return route.method === method && route.path === url
+    }) 
+
+    if (route) {
+        return route.handler(req, res)
     }
+
+    return res.writeHead(404).end('não encontrado')
 })
 
 server.listen(3335)
