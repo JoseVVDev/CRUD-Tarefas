@@ -19,8 +19,16 @@ export class Database {
         fs.writeFile(databasePath, JSON.stringify(this.#database))
     }
 
-    select(table) {
-        const data = this.#database[table] ?? []
+    select(table, search) {
+        let data = this.#database[table] ?? []
+
+        if (search) {
+            data = data.filter(row => {
+                return Object.entries(search).some(([key, value]) => {
+                    return row[key].toLowerCase().includes(value.toLowerCase())
+                })
+            })
+        }
 
         return data
     }
@@ -58,7 +66,7 @@ export class Database {
                 description: data.description,
                 created_at: this.#database[table][rowIndex].created_at,
                 completed_at: this.#database[table][rowIndex].completed_at,
-                updated_at: data.updated_at
+                updated_at: new Date()
             }
             this.#persist()
         }
@@ -71,6 +79,7 @@ export class Database {
 
         if(rowIndex > -1) {
             this.#database[table][rowIndex].completed_at = new Date()
+            this.#database[table][rowIndex].updated_at = new Date()
         }
 
         return rowIndex

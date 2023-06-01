@@ -9,7 +9,13 @@ export const routes = [
         method: 'GET',
         path: buildRoutePath('/tasks'),
         handler: (req, res) => {
-            const tasks = database.select('tasks')
+
+            const { search } = req.query
+
+            const tasks = database.select('tasks', search ? {
+                title: decodeURIComponent(search),
+                description: decodeURIComponent(search),
+            } : null)
             return res.end(JSON.stringify(tasks))
         }
     },
@@ -36,7 +42,7 @@ export const routes = [
         method: 'DELETE',
         path: buildRoutePath('/tasks/:id'),
         handler: (req, res) => {
-            const { id } = req.params.groups
+            const { id } = req.params
 
             const deleteStatus = database.delete('tasks', id)
 
@@ -52,14 +58,13 @@ export const routes = [
         method: 'PUT',
         path: buildRoutePath('/tasks/:id'),
         handler: (req, res) => {
-            const { id } = req.params.groups
+            const { id } = req.params
             const { title, description } = req.body
 
             if (title && description) {
                 const task = {
                     title: title,
                     description: description,
-                    updated_at: new Date()
                 }
     
                 const updateStatus = database.update('tasks', id, task)
@@ -79,7 +84,7 @@ export const routes = [
         method: 'PATCH',
         path: buildRoutePath('/tasks/:id'),
         handler: (req, res) => {
-            const { id } = req.params.groups
+            const { id } = req.params
 
             const completeStatus = database.complete('tasks', id)
 
