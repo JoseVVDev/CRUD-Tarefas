@@ -52,8 +52,28 @@ export class Database {
         const rowIndex = this.#database[table].findIndex(index => index.id === id)
 
         if(rowIndex > -1) {
-            this.#database[table][rowIndex] = {id, ...data}
+            this.#database[table][rowIndex] = {
+                id, 
+                title: data.title,
+                description: data.description,
+                created_at: this.#database[table][rowIndex].created_at,
+                completed_at: this.#database[table][rowIndex].completed_at,
+                updated_at: data.updated_at
+            }
             this.#persist()
         }
+
+        return rowIndex
+    }
+
+    complete(table, id){
+        const rowIndex = this.#database[table].findIndex(index => index.id === id)
+
+        if(rowIndex > -1) {
+            this.#database[table][rowIndex].completed_at = new Date()
+        }
+
+        return rowIndex
+
     }
 }

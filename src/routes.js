@@ -44,7 +44,7 @@ export const routes = [
                 return res.writeHead(200).end()
             }
 
-            return res.writeHead(404).end('provided ID was not found')
+            return res.writeHead(400).end('provided ID was not found')
 
         }
     },
@@ -55,15 +55,40 @@ export const routes = [
             const { id } = req.params.groups
             const { title, description } = req.body
 
-            const task = {
-                title: title,
-                description: description,
-                completed_at: null,
-                updated_at: new Date()
+            if (title && description) {
+                const task = {
+                    title: title,
+                    description: description,
+                    updated_at: new Date()
+                }
+    
+                const updateStatus = database.update('tasks', id, task)
+
+                if (updateStatus > -1) {
+                    return res.writeHead(200).end()
+                }
+                
+                return res.writeHead(400).end('provided ID was not found')
             }
 
-            database.update('tasks', id, task)
-            return res.writeHead(200).end()
+            return res.writeHead(400).end('missing data')
+            
         }
     },
+    {
+        method: 'PATCH',
+        path: buildRoutePath('/tasks/:id'),
+        handler: (req, res) => {
+            const { id } = req.params.groups
+
+            const completeStatus = database.complete('tasks', id)
+
+            if (completeStatus > -1) {
+                return res.writeHead(200).end()
+            }
+
+            return res.writeHead(400).end('provided Id was not found')
+        }
+    }
+
 ]
