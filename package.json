@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/JoseVVDev/CRUD-Tarefas/issues"
   },
-  "homepage": "https://github.com/JoseVVDev/CRUD-Tarefas#readme"
+  "homepage": "https://github.com/JoseVVDev/CRUD-Tarefas#readme",
+  "dependencies": {
+    "csv-parse": "^5.4.0"
+  }
 }
